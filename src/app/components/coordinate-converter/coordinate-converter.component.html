@@ -1,0 +1,250 @@
+<div class="coordinate-converter">
+    <div class="header">
+        <h2>Coordinate Converter</h2>
+        <p>Convert between Decimal Degrees (DD), Degrees Minutes Seconds (DMS), and Degrees Decimal Minutes (DDM)</p>
+    </div>
+
+    <div class="controls">
+        <button class="action-btn sample-btn" (click)="loadSampleCoordinate()"
+            title="Load Seattle coordinates as sample">
+            Load Sample
+        </button>
+        <button class="action-btn clear-btn" (click)="clearAll()" title="Clear all inputs">
+            Clear All
+        </button>
+    </div>
+
+    <div class="format-selector">
+        <h3>Input Format</h3>
+        <div class="format-buttons">
+            <button class="format-btn" [class.active]="inputFormat() === 'DD'" (click)="setInputFormat('DD')">
+                Decimal Degrees (DD)
+            </button>
+            <button class="format-btn" [class.active]="inputFormat() === 'DMS'" (click)="setInputFormat('DMS')">
+                Degrees Minutes Seconds (DMS)
+            </button>
+            <button class="format-btn" [class.active]="inputFormat() === 'DDM'" (click)="setInputFormat('DDM')">
+                Degrees Decimal Minutes (DDM)
+            </button>
+        </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="input-section">
+        <h3>Input Coordinates</h3>
+
+        <!-- Decimal Degrees Input -->
+        <div class="input-group" *ngIf="inputFormat() === 'DD'">
+            <h4>Decimal Degrees (DD)</h4>
+            <div class="coordinate-inputs">
+                <div class="input-field">
+                    <label for="dd-lat">Latitude:</label>
+                    <input id="dd-lat" type="number" step="any" min="-90" max="90" [value]="ddLatitude()"
+                        (input)="updateDDLatitude($any($event.target).value)" placeholder="Enter latitude (-90 to 90)">
+                    <span class="unit">°</span>
+                </div>
+                <div class="input-field">
+                    <label for="dd-lng">Longitude:</label>
+                    <input id="dd-lng" type="number" step="any" min="-180" max="180" [value]="ddLongitude()"
+                        (input)="updateDDLongitude($any($event.target).value)"
+                        placeholder="Enter longitude (-180 to 180)">
+                    <span class="unit">°</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degrees Minutes Seconds Input -->
+        <div class="input-group" *ngIf="inputFormat() === 'DMS'">
+            <h4>Degrees Minutes Seconds (DMS)</h4>
+            <div class="coordinate-inputs">
+                <div class="dms-input">
+                    <h5>Latitude</h5>
+                    <div class="dms-fields">
+                        <div class="input-field">
+                            <label>Degrees:</label>
+                            <input type="number" min="0" max="90" [value]="dmsLatDegrees()"
+                                (input)="updateDMSLatDegrees($any($event.target).value)">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Minutes:</label>
+                            <input type="number" min="0" max="59" [value]="dmsLatMinutes()"
+                                (input)="updateDMSLatMinutes($any($event.target).value)">
+                            <span class="unit">'</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Seconds:</label>
+                            <input type="number" step="any" min="0" max="59.999" [value]="dmsLatSeconds()"
+                                (input)="updateDMSLatSeconds($any($event.target).value)">
+                            <span class="unit">"</span>
+                        </div>
+                        <div class="direction-field">
+                            <label>Direction:</label>
+                            <select [value]="dmsLatDirection()"
+                                (change)="dmsLatDirection.set($any($event.target).value)">
+                                <option value="N">N</option>
+                                <option value="S">S</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="dms-input">
+                    <h5>Longitude</h5>
+                    <div class="dms-fields">
+                        <div class="input-field">
+                            <label>Degrees:</label>
+                            <input type="number" min="0" max="180" [value]="dmsLngDegrees()"
+                                (input)="updateDMSLngDegrees($any($event.target).value)">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Minutes:</label>
+                            <input type="number" min="0" max="59" [value]="dmsLngMinutes()"
+                                (input)="updateDMSLngMinutes($any($event.target).value)">
+                            <span class="unit">'</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Seconds:</label>
+                            <input type="number" step="any" min="0" max="59.999" [value]="dmsLngSeconds()"
+                                (input)="updateDMSLngSeconds($any($event.target).value)">
+                            <span class="unit">"</span>
+                        </div>
+                        <div class="direction-field">
+                            <label>Direction:</label>
+                            <select [value]="dmsLngDirection()"
+                                (change)="dmsLngDirection.set($any($event.target).value)">
+                                <option value="E">E</option>
+                                <option value="W">W</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degrees Decimal Minutes Input -->
+        <div class="input-group" *ngIf="inputFormat() === 'DDM'">
+            <h4>Degrees Decimal Minutes (DDM)</h4>
+            <div class="coordinate-inputs">
+                <div class="ddm-input">
+                    <h5>Latitude</h5>
+                    <div class="ddm-fields">
+                        <div class="input-field">
+                            <label>Degrees:</label>
+                            <input type="number" min="0" max="90" [value]="ddmLatDegrees()"
+                                (input)="updateDDMLatDegrees($any($event.target).value)">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Minutes:</label>
+                            <input type="number" step="any" min="0" max="59.999" [value]="ddmLatMinutes()"
+                                (input)="updateDDMLatMinutes($any($event.target).value)">
+                            <span class="unit">'</span>
+                        </div>
+                        <div class="direction-field">
+                            <label>Direction:</label>
+                            <select [value]="ddmLatDirection()"
+                                (change)="ddmLatDirection.set($any($event.target).value)">
+                                <option value="N">N</option>
+                                <option value="S">S</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ddm-input">
+                    <h5>Longitude</h5>
+                    <div class="ddm-fields">
+                        <div class="input-field">
+                            <label>Degrees:</label>
+                            <input type="number" min="0" max="180" [value]="ddmLngDegrees()"
+                                (input)="updateDDMLngDegrees($any($event.target).value)">
+                            <span class="unit">°</span>
+                        </div>
+                        <div class="input-field">
+                            <label>Minutes:</label>
+                            <input type="number" step="any" min="0" max="59.999" [value]="ddmLngMinutes()"
+                                (input)="updateDDMLngMinutes($any($event.target).value)">
+                            <span class="unit">'</span>
+                        </div>
+                        <div class="direction-field">
+                            <label>Direction:</label>
+                            <select [value]="ddmLngDirection()"
+                                (change)="ddmLngDirection.set($any($event.target).value)">
+                                <option value="E">E</option>
+                                <option value="W">W</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Output Section -->
+    <div class="output-section">
+        <h3>Converted Coordinates</h3>
+
+        <!-- Decimal Degrees Output -->
+        <div class="output-group">
+            <h4>Decimal Degrees (DD)</h4>
+            <div class="output-values">
+                <div class="output-field">
+                    <label>Latitude:</label>
+                    <span class="value">{{ ddCoordinates().latitude | number:'1.6-6' }}°</span>
+                </div>
+                <div class="output-field">
+                    <label>Longitude:</label>
+                    <span class="value">{{ ddCoordinates().longitude | number:'1.6-6' }}°</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degrees Minutes Seconds Output -->
+        <div class="output-group">
+            <h4>Degrees Minutes Seconds (DMS)</h4>
+            <div class="output-values">
+                <div class="output-field">
+                    <label>Latitude:</label>
+                    <span class="value">
+                        {{ dmsCoordinates().latDegrees }}°
+                        {{ dmsCoordinates().latMinutes }}'
+                        {{ dmsCoordinates().latSeconds | number:'1.0-3' }}"
+                        {{ dmsCoordinates().latDirection }}
+                    </span>
+                </div>
+                <div class="output-field">
+                    <label>Longitude:</label>
+                    <span class="value">
+                        {{ dmsCoordinates().lngDegrees }}°
+                        {{ dmsCoordinates().lngMinutes }}'
+                        {{ dmsCoordinates().lngSeconds | number:'1.0-3' }}"
+                        {{ dmsCoordinates().lngDirection }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degrees Decimal Minutes Output -->
+        <div class="output-group">
+            <h4>Degrees Decimal Minutes (DDM)</h4>
+            <div class="output-values">
+                <div class="output-field">
+                    <label>Latitude:</label>
+                    <span class="value">
+                        {{ ddmCoordinates().latDegrees }}°
+                        {{ ddmCoordinates().latMinutes | number:'1.0-3' }}'
+                        {{ ddmCoordinates().latDirection }}
+                    </span>
+                </div>
+                <div class="output-field">
+                    <label>Longitude:</label>
+                    <span class="value">
+                        {{ ddmCoordinates().lngDegrees }}°
+                        {{ ddmCoordinates().lngMinutes | number:'1.0-3' }}'
+                        {{ ddmCoordinates().lngDirection }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

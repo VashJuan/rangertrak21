@@ -1,0 +1,21 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/spec",
+        "types": [
+            "vitest/globals",
+            "node",
+            "@angular/localize"
+        ],
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "files": [
+        "src/test-setup.ts"
+    ],
+    "include": [
+        "src/**/*.spec.ts",
+        "src/**/*.test.ts",
+        "src/**/*.d.ts"
+    ]
+}
