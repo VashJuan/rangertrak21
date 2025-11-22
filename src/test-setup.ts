@@ -1,15 +1,17 @@
-import 'zone.js';
-import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
 import {
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
-// Initialize the Angular testing environment
+// Initialize the Angular testing environment with zoneless change detection
 getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
+    platformBrowserDynamicTesting(),
+    {
+        providers: [provideExperimentalZonelessChangeDetection()]
+    }
 );
 
 // Mock global objects that might be needed
