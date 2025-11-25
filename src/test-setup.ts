@@ -3,14 +3,14 @@ import {
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 // Initialize the Angular testing environment with zoneless change detection
 getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting(),
     {
-        providers: [provideExperimentalZonelessChangeDetection()]
+        providers: [provideZonelessChangeDetection()]
     }
 );
 

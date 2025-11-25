@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, it, expect, beforeEach } from 'vitest';
+import { CoordinateConverterComponent } from './coordinate-converter.component';
 
 describe('CoordinateConverterComponent', () => {
     let component: CoordinateConverterComponent;
@@ -7,7 +9,8 @@ describe('CoordinateConverterComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CoordinateConverterComponent]
+            imports: [CoordinateConverterComponent],
+            providers: [provideZonelessChangeDetection()]
         })
             .compileComponents();
 
@@ -105,6 +108,8 @@ describe('CoordinateConverterComponent', () => {
         expect(component.ddLongitude()).toBe(0);
         expect(component.dmsLatDegrees()).toBe(0);
         expect(component.dmsLatMinutes()).toBe(0);
+        expect(component.dmsLatDirection()).toBe('S');
+        expect(component.dmsLngDirection()).toBe('E');
     });
 
     it('should load sample coordinates', () => {
